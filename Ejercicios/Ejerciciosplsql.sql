@@ -301,3 +301,87 @@ DBMS_OUTPUT.PUT_LINE('ID: ' || rec_departments.department_id);
 DBMS_OUTPUT.PUT_LINE('NAME: ' || rec_departments.department_name);
 END LOOP;
 END;
+
+DECLARE
+CURSOR sal_empleados IS
+SELECT salary FROM hr.employees;
+BEGIN
+FOR rec_employees IN sal_empleados LOOP
+DBMS_OUTPUT.PUT_LINE('Salario: ' || rec_employees.salary);
+END LOOP;
+END;
+
+DECLARE
+    CURSOR c_departamento IS
+        SELECT *
+        FROM departments
+        WHERE department_id = 90;
+
+    v_departamento departments%ROWTYPE; -- Declaración de la variable de tipo ROWTYPE
+
+BEGIN
+    OPEN c_departamento;
+    FETCH c_departamento INTO v_departamento;
+
+    IF c_departamento%FOUND THEN
+        -- Mostrar los detalles del departamento
+        DBMS_OUTPUT.PUT_LINE('ID del departamento: ' || v_departamento.department_id);
+        DBMS_OUTPUT.PUT_LINE('Nombre del departamento: ' || v_departamento.department_name);
+        DBMS_OUTPUT.PUT_LINE('ID del gerente: ' || v_departamento.manager_id);
+        DBMS_OUTPUT.PUT_LINE('ID de la ubicación: ' || v_departamento.location_id);
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('No se encontró ningún departamento con el ID 90.');
+    END IF;
+
+    CLOSE c_departamento;
+END;
+/
+
+DECLARE
+    CURSOR c_locations IS
+        SELECT *
+        FROM locations;
+
+    v_location locations%ROWTYPE; -- Declaración de la variable de tipo ROWTYPE
+
+BEGIN
+    FOR v_location IN c_locations LOOP
+        -- Mostrar los detalles de cada ubicación
+        DBMS_OUTPUT.PUT_LINE('Location ID: ' || v_location.location_id);
+        DBMS_OUTPUT.PUT_LINE('Street Address: ' || v_location.street_address);
+        DBMS_OUTPUT.PUT_LINE('Postal Code: ' || v_location.postal_code);
+        DBMS_OUTPUT.PUT_LINE('City: ' || v_location.city);
+        DBMS_OUTPUT.PUT_LINE('State Province: ' || v_location.state_province);
+        DBMS_OUTPUT.PUT_LINE('Country ID: ' || v_location.country_id);
+        DBMS_OUTPUT.PUT_LINE('--------------------');
+    END LOOP;
+END;
+/
+
+DECLARE
+    CURSOR c_locations IS
+        SELECT *
+        FROM locations;
+
+    v_location locations%ROWTYPE; -- Declaración de la variable de tipo ROWTYPE
+
+BEGIN
+    OPEN c_locations;
+    LOOP
+        FETCH c_locations INTO v_location;
+        EXIT WHEN c_locations%NOTFOUND;
+
+        -- Mostrar los detalles de cada ubicación
+        DBMS_OUTPUT.PUT_LINE('Location ID: ' || v_location.location_id);
+        DBMS_OUTPUT.PUT_LINE('Street Address: ' || v_location.street_address);
+        DBMS_OUTPUT.PUT_LINE('Postal Code: ' || v_location.postal_code);
+        DBMS_OUTPUT.PUT_LINE('City: ' || v_location.city);
+        DBMS_OUTPUT.PUT_LINE('State Province: ' || v_location.state_province);
+        DBMS_OUTPUT.PUT_LINE('Country ID: ' || v_location.country_id);
+        DBMS_OUTPUT.PUT_LINE('--------------------');
+    END LOOP;
+
+    CLOSE c_locations;
+END;
+/
+
