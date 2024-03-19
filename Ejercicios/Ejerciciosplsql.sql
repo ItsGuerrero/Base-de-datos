@@ -247,3 +247,57 @@ WHERE employee_id = 100;
 DBMS_OUTPUT.PUT_LINE('Salario es ' || v_salary);
 DBMS_OUTPUT.PUT_LINE('Apellido es ' || v_apellido);
 END;
+
+DECLARE rec_empleado hr.employees%rowtype;
+BEGIN
+SELECT * INTO rec_empleado FROM hr.employees WHERE employee_id = 100;
+DBMS_OUTPUT.PUT_LINE('ID = ' || rec_empleado.employee_id);
+DBMS_OUTPUT.PUT_LINE('Nombre = ' || rec_empleado.first_name);
+DBMS_OUTPUT.PUT_LINE('Apellido = ' || rec_empleado.last_name);
+DBMS_OUTPUT.PUT_LINE('Salario = ' || rec_empleado.salary);
+END;
+
+DECLARE
+CURSOR cur_locations
+IS
+SELECT
+location_id, city
+FROM locations;
+
+loc_id hr.locations.location_id%type;
+ciudad hr.locations.city%type;
+
+BEGIN
+OPEN cur_locations;
+FETCH cur_locations INTO loc_id, ciudad;
+DBMS_OUTPUT.PUT_LINE('LOC_ID: ' || loc_id);
+DBMS_OUTPUT.PUT_LINE('CIUDAD: ' || ciudad);
+CLOSE cur_locations;
+END;
+
+DECLARE
+CURSOR cursorEmpleado IS
+SELECT *
+FROM hr.employees;
+registroEmpleado hr.employees%ROWTYPE;
+BEGIN
+OPEN cursorEmpleado;
+FETCH cursorEmpleado INTO registroEmpleado;
+WHILE cursorEmpleado%FOUND LOOP
+DBMS_OUTPUT.PUT_LINE(registroEmpleado.employee_id || ' ' || registroEmpleado.last_name || ' ' || registroEmpleado.department_id);
+FETCH cursorEmpleado INTO registroEmpleado;
+END LOOP;
+CLOSE cursorEmpleado;
+DBMS_OUTPUT.PUT_LINE('Consulta con cursor finalizada');
+END;
+
+DECLARE
+CURSOR cur_depart IS
+SELECT department_id, department_name
+FROM hr.departments;
+BEGIN
+FOR rec_departments IN cur_depart LOOP
+DBMS_OUTPUT.PUT_LINE('ID: ' || rec_departments.department_id);
+DBMS_OUTPUT.PUT_LINE('NAME: ' || rec_departments.department_name);
+END LOOP;
+END;
