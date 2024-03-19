@@ -138,3 +138,112 @@ BEGIN
     dbms_output.put_line('Signo de la quiniela: ' || v_signo_quiniela);
 END;
 /
+
+DECLARE
+    TYPE PAIS_TYPE IS RECORD (
+        codigo_pais VARCHAR2(3),
+        nombre_pais VARCHAR2(50),
+        continente VARCHAR2(50)
+    );
+
+    v_pais PAIS_TYPE;
+
+BEGIN
+    -- Asignar valores al registro
+    v_pais.codigo_pais := 'ESP';
+    v_pais.nombre_pais := 'España';
+    v_pais.continente := 'Europa';
+
+    -- Mostrar los valores del registro
+    DBMS_OUTPUT.PUT_LINE('Código del país: ' || v_pais.codigo_pais);
+    DBMS_OUTPUT.PUT_LINE('Nombre del país: ' || v_pais.nombre_pais);
+    DBMS_OUTPUT.PUT_LINE('Continente: ' || v_pais.continente);
+END;
+/
+
+DECLARE
+    TYPE PAIS_TYPE IS RECORD (
+        codigo_pais VARCHAR2(3),
+        nombre_pais VARCHAR2(50),
+        continente VARCHAR2(50)
+    );
+
+    -- Declaración de la variable tipo PAIS
+    otro_pais PAIS_TYPE;
+
+BEGIN
+    -- Asignar valores a la variable otro_pais
+    otro_pais.codigo_pais := 'USA';
+    otro_pais.nombre_pais := 'Estados Unidos';
+    otro_pais.continente := 'América';
+
+    -- Mostrar los valores asignados a otro_pais
+    DBMS_OUTPUT.PUT_LINE('Código del país: ' || otro_pais.codigo_pais);
+    DBMS_OUTPUT.PUT_LINE('Nombre del país: ' || otro_pais.nombre_pais);
+    DBMS_OUTPUT.PUT_LINE('Continente: ' || otro_pais.continente);
+END;
+/
+
+DECLARE
+    TYPE t_CIUDADES IS TABLE OF VARCHAR2(50) INDEX BY PLS_INTEGER;
+
+    -- Declarar la variable misciudades y asignar valores
+    misciudades t_CIUDADES;
+BEGIN
+    -- Asignar valores a la variable misciudades
+    misciudades(1) := 'MADRID';
+    misciudades(2) := 'MALAGA';
+    misciudades(3) := 'BILBAO';
+
+    -- Mostrar el primer elemento de misciudades
+    DBMS_OUTPUT.PUT_LINE('Primer elemento: ' || misciudades(misciudades.FIRST));
+
+    -- Mostrar el último elemento de misciudades
+    DBMS_OUTPUT.PUT_LINE('Último elemento: ' || misciudades(misciudades.LAST));
+END;
+/
+
+DECLARE
+    TYPE t_CIUDADES IS TABLE OF VARCHAR2(50) INDEX BY PLS_INTEGER;
+
+    -- Declarar la variable misciudades y asignar valores
+    misciudades t_CIUDADES;
+    ciudad_a_buscar VARCHAR2(50) := 'MALAGA'; -- Ciudad a buscar
+    num_registros INTEGER; -- Variable para almacenar el número de registros
+
+BEGIN
+    -- Asignar valores a la variable misciudades
+    misciudades(1) := 'MADRID';
+    misciudades(3) := 'BILBAO';
+
+    -- Comprobar si la ciudad MALAGA existe en misciudades
+    IF misciudades.EXISTS(2) THEN
+        DBMS_OUTPUT.PUT_LINE('La ciudad MALAGA existe.');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('La ciudad MALAGA no existe.');
+    END IF;
+    -- Contar el número de registros de la tabla
+    num_registros := misciudades.COUNT;
+    DBMS_OUTPUT.PUT_LINE('Número de registros de la tabla: ' || num_registros);
+END;
+/
+
+DECLARE
+TYPE nombres IS VARRAY(10) OF VARCHAR2(30);
+misnombres nombres := nombres('Juan', 'Pepe', 'Luis');
+BEGIN
+    FOR i IN 1..misnombres.COUNT LOOP
+    DBMS_OUTPUT.PUT_LINE('NOMBRES ' || misnombres(i));
+    END LOOP;
+END;
+
+DECLARE
+v_salary employees.salary%type;
+v_apellido employees.last_name%type;
+BEGIN
+SELECT last_name, salary INTO v_apellido, v_salary
+FROM hr.employees
+WHERE employee_id = 100;
+DBMS_OUTPUT.PUT_LINE('Salario es ' || v_salary);
+DBMS_OUTPUT.PUT_LINE('Apellido es ' || v_apellido);
+END;
